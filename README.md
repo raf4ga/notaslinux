@@ -67,7 +67,7 @@ Se realiza una recuperacion de un logical volume elimanado accidentalmente.
 		-rw-------. 1 root root  910 Apr  3 00:42 vgtest_00001-1942101961.vg
 		-rw-------. 1 root root 1338 Apr  3 00:49 vgtest_00002-2052112883.vg
 ```
-    - Tener en cuenta el que dice **before**
+	- Tener en cuenta el que dice **before**
 	- ```vgcfgrestore --list vgtest```
 ```		
 		File:         /etc/lvm/archive/vgtest_00002-2052112883.vg
