@@ -18,45 +18,46 @@ se procede a revertir.
   - Devolver disco
 
   - Preparar crear snapshot
-	```vgs```
-	```lvs```
-	```vgextend vgroot /dev/sdb```
-	```lvcreate -s -n snaproot -L400M vgroot/lvroot```
-	```lvcreate -s -n snapusr -L100M vgroot/lvusr```
-	```yum update -y```
-	```mkdir /snaproot```
-	```mkdir /snapusr```
+	- ```vgs```
+	- ```lvs```
+	- ```vgextend vgroot /dev/sdb```
+	- ```lvcreate -s -n snaproot -L400M vgroot/lvroot```
+	- ```lvcreate -s -n snapusr -L100M vgroot/lvusr```
+	- ```yum update -y```
+	- ```mkdir /snaproot```
+	- ```mkdir /snapusr```
 
   - Opcional para revisar contenido
-	```mount /dev/vgroot/snaproot /snaproot/ -o nouuid,ro```
-	```mount /dev/vgroot/snapusr /snapusr/ -o nouuid,ro```
-	```umount /snaproot/```
-	```lvremove /dev/vgroot/snaproot```
+	- ```mount /dev/vgroot/snaproot /snaproot/ -o nouuid,ro```
+	- ```mount /dev/vgroot/snapusr /snapusr/ -o nouuid,ro```
+	- ```umount /snaproot/```
+	- ```lvremove /dev/vgroot/snaproot```
 
   - Revertir
-    ```lvconvert --merge vgroot snaproot```
-	```lvconvert --merge vgroot snapusr```
-	```reboot```
+    - ```lvconvert --merge vgroot snaproot```
+	- ```lvconvert --merge vgroot snapusr```
+	- ```reboot```
 
   - Editar Menu Grub
-	```grep menuentry /boot/grub2/grub.cfg ```
-	```vim /etc/default/grub   --> GRUB_DEFAULT=0```
-	```grub2-mkconfig -o /boot/grub2/grub.cfg ```
-	```reboot```
+	- ```grep menuentry /boot/grub2/grub.cfg ```
+	- ```vim /etc/default/grub   --> GRUB_DEFAULT=0```
+	- ```grub2-mkconfig -o /boot/grub2/grub.cfg ```
+	- ```reboot```
 
   - Devolver disco
-	```vgreduce vgroot /dev/sdb```
-	```vgs```
-	```pvremove /dev/sdb```
-	```pvs```
+	- ```vgreduce vgroot /dev/sdb```
+	- ```vgs```
+	- ```pvremove /dev/sdb```
+	- ```pvs```
 
 
 ### Restaurar LVM Eliminado
-	```lvremove /dev/vgtest/lvtest ```
-	```lvs```
+```
+	lvremove /dev/vgtest/lvtest
+	lvs
 
-		```[root@localhost /]# ls -la /etc/lvm/archive/``` --> Verificar por fecha
-		```total 16
+		[root@localhost /]# ls -la /etc/lvm/archive/ --> Verificar por fecha
+		total 16
 		drwx------. 2 root root  144 Apr  3 00:49 .
 		drwxr-xr-x. 6 root root  100 Apr  3 00:13 ..
 		-rw-------. 1 root root 1738 Apr  3 00:28 almalinux_00000-455080098.vg
@@ -64,15 +65,17 @@ se procede a revertir.
 		-rw-------. 1 root root  910 Apr  3 00:42 vgtest_00001-1942101961.vg
 		-rw-------. 1 root root 1338 Apr  3 00:49 vgtest_00002-2052112883.vg```
 
-	```vgcfgrestore --list vgtest```   --> Tener en cuenta el que dice **before**
-		```File:         /etc/lvm/archive/vgtest_00002-2052112883.vg
+	vgcfgrestore --list vgtest   --> Tener en cuenta el que dice **before**
+		File:         /etc/lvm/archive/vgtest_00002-2052112883.vg
 		VG name:      vgtest
 		Description:  Created *before* executing 'lvremove /dev/vgtest/lvtest'
-		Backup Time:  Sat Apr  3 00:49:06 2021```
+		Backup Time:  Sat Apr  3 00:49:06 2021
 
-	```vgcfgrestore -f /etc/lvm/archive/vgtest_00002-2052112883.vg vgtest ```
-	```lvscan ```
-	```lvchange -ay /dev/vgtest/lvtest```
-	```lvscan ```
-	```lvs```
-	```mount -a```
+	vgcfgrestore -f /etc/lvm/archive/vgtest_00002-2052112883.vg vgtest
+	lvscan
+	lvchange -ay /dev/vgtest/lvtest
+	lvscan
+	lvs
+	mount -a
+```
+
